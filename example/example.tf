@@ -12,6 +12,13 @@ locals {
     agency_code  = "brettoj"
     tier         = "web"
   }
+
+    solution_plan_map  = {
+      KeyVaultAnalytics = {
+      "publisher" = "Microsoft"
+      "product"   = "OMSGallery/KeyVaultAnalytics"
+    }
+  }
 }
 
 module "resource_groups" {
@@ -28,7 +35,7 @@ module "resource_groups" {
 
 
 module "azure_log_analytics_workspace" {
-  source                             = "../"
+  source                             = "git::https://github.com/BrettOJ/tf-az-module-log-analytics?ref=main"
   location                           = var.location
   resource_group_name                = var.resource_group_name
   naming_convention_info             = local.naming_convention_info
@@ -42,5 +49,6 @@ module "azure_log_analytics_workspace" {
   internet_ingestion_enabled         = var.internet_ingestion_enabled
   internet_query_enabled             = var.internet_query_enabled
   reservation_capacity_in_gb_per_day = var.reservation_capacity_in_gb_per_day
-  depends_on                         = var.dependencies
+  depends_on                         = [var.dependencies]
+  solution_plan_map = local.solution_plan_map
 }

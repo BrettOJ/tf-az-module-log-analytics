@@ -15,22 +15,20 @@ resource "azurerm_log_analytics_workspace" "log_analytics" {
   depends_on                         = [var.dependencies]
 }
 
-locals {
-  solution_list = keys(var.solution_plan_map)
-}
 
 resource "azurerm_log_analytics_solution" "la_solution" {
-  count                 = length(local.solution_list)
-  solution_name         = element(local.solution_list, count.index)
+  for_each = var.solution_plan_map != null ? var.solution_plan_map : {}
+  
+  solution_name         = each.key
   location              = var.location
   resource_group_name   = var.resource_group_name
   workspace_resource_id = azurerm_log_analytics_workspace.log_analytics.id
   workspace_name        = azurerm_log_analytics_workspace.log_analytics.name
-  tags = module.la_solution_name.naming_convention_output[element(local.solution_list, count.index)].tags
+  tags = module.la_solution_name.naming_convention_output[each.key].tags.0
  
 
   plan {
-    product   = var.solution_plan_map[element(local.solution_list, count.index)].product
-    publisher = var.solution_plan_map[element(local.solution_list, count.index)].publisher
+    product   = var.solution_plan_map[each.key].product
+    publisher = var.solution_plan_map[each.key].publisher
   }
 }

@@ -13,12 +13,14 @@ module "la_workspace_name" {
 
 
 locals {
-  la_solution_naming_convention_info = {
+
+  la_solution_naming_convention_info = var.solution_plan_map != null ? {
     for key, value in var.solution_plan_map : "${key}" => {
       name_info = merge(var.naming_convention_info, { name = key })
       tags      = var.tags
     }
-  }
+  } : {}
+
 }
 
 module "la_solution_name" {

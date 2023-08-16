@@ -9,6 +9,7 @@ variable "location" {
 variable "solution_plan_map" {
   description = "(Optional) Map structure containing the list of solutions to be enabled.See https://docs.microsoft.com/en-us/azure/azure-monitor/insights/solutions-inventory"
   type        = map(any)
+  default     = null
 }
 
 variable "sku" {
