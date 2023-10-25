@@ -21,7 +21,6 @@ variable "naming_convention_info" {
   type = object({
     name         = string
     agency_code  = string
-    agency_code  = string
     project_code = string
     env          = string
     zone         = string
