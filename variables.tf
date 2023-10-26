@@ -34,8 +34,8 @@ variable "tags" {
 }
 
 variable "dependencies" {
-  description = "List of dependecies modules or resources"
-  default     = null
+  type = list(string)
+  default = ["dependency1", "dependency2"]
 }
 
 variable "allow_resource_only_permissions" {
